@@ -1,35 +1,47 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Home from "./Home";
-import Pets from "./Pets";
-import Add from "./Add";
-import Update from "./Update";
-import Delete from "./Delete";
-import View from "./View";
-import "./App.css";
-import petLogo from "../src/assets/Images/Logo.webp";
+import React, { useState } from "react";
+import PetList from "./View/View";
+import AddPet from "./Add/Add";
+import UpdatePet from "./Update/Update";
+import "./App.css"; // Import the CSS
 
-function App() {
+const App = () => {
+  const [pets, setPets] = useState([]);
+  const [selectedPet, setSelectedPet] = useState(null);
+
+  const addPet = (newPet) => {
+    setPets([...pets, { ...newPet, id: Date.now() }]);
+  };
+
+  const updatePet = (updatedPet) => {
+    setPets(pets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet)));
+    setSelectedPet(null);
+  };
+
+  const deletePet = (id) => {
+    setPets(pets.filter((pet) => pet.id !== id));
+  };
+
   return (
-    <Router>
-      <div className="App">
-        <header className="App-header">
-          <img src={petLogo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-        </header>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/pets" exact component={Pets} />
-          <Route path="/pets/create" component={Add} />
-          <Route path="/pets/update" component={Update} />
-          <Route path="/pets/delete" component={Delete} />
-          <Route path="/pets/view" component={View} />
-        </Switch>
-      </div>
-    </Router>
+    <div className="app-container">
+      <header className="header">
+        <h1>🐾 PETOPIA 🐾</h1>
+      </header>
+
+      <main className="content">
+        <AddPet addPet={addPet} />
+        <PetList
+          pets={pets}
+          deletePet={deletePet}
+          setSelectedPet={setSelectedPet}
+        />
+        {selectedPet && <UpdatePet pet={selectedPet} updatePet={updatePet} />}
+      </main>
+
+      <footer className="footer">
+        <p>&copy; 2024 Petopia. All rights reserved.</p>
+      </footer>
+    </div>
   );
-}
+};
 
 export default App;
