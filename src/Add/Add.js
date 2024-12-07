@@ -14,17 +14,34 @@ const AddPet = ({ addPet }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addPet(formData);
-    setFormData({
-      name: "",
-      species: "",
-      breed: "",
-      age: "",
-      price: "",
-      description: "",
-    });
+
+    try {
+      const response = await fetch("http://localhost:8000/pets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add pet");
+      }
+
+      const newPet = await response.json();
+      addPet(newPet); // Update the local state
+      setFormData({
+        name: "",
+        species: "",
+        breed: "",
+        age: "",
+        price: "",
+        description: "",
+        image: "",
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -70,6 +87,13 @@ const AddPet = ({ addPet }) => {
         name="description"
         placeholder="Description"
         value={formData.description}
+        onChange={handleChange}
+      />
+      <input
+        type="text"
+        name="image"
+        placeholder="Image"
+        value={formData.image}
         onChange={handleChange}
       />
       <button type="submit">Add Pet</button>
