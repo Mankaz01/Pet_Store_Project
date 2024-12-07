@@ -1,3 +1,4 @@
+/* General Styles */
 body {
   margin: 0;
   font-family: "Arial", sans-serif;
@@ -5,16 +6,19 @@ body {
   color: #333;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100vh; /* Full viewport height */
+  background: url("./assets/Images/BackgroundImg.jpg") no-repeat center center fixed;
+  background-size: cover; /* Ensures the image covers the entire screen */
+  background-attachment: fixed; /* Keeps the background fixed during scrolling */
 }
 
 .app-container {
-  flex: 1;
+  flex: 1; /* Allow content to grow and fill space */
   display: flex;
   flex-direction: column;
-  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  overflow: auto; /* To handle overflow content */
 }
 
 /* Header Styles */
@@ -22,7 +26,7 @@ body {
   text-align: center;
   padding: 20px;
   background: linear-gradient(45deg, #ff7e5f, #feb47b);
-  color: white;
+  color: indigo;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -30,6 +34,33 @@ body {
 .header h1 {
   margin: 0;
   font-size: 2.5rem;
+}
+
+/* Add New Pet Button */
+.add-button {
+  display: inline-block;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(45deg, #feb47b, #ff7e5f);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-button:hover {
+  background: linear-gradient(45deg, #ff7e5f, #feb47b);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.add-button:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(255, 126, 95, 0.5);
 }
 
 /* Form Styles */
@@ -80,49 +111,67 @@ form button:hover {
 
 /* Pet List Styles */
 .pet-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid layout */
+  gap: 20px; /* Space between items */
   list-style: none;
   padding: 0;
+  margin: 20px 0;
 }
 
 .pet-list li {
   background-color: white;
-  margin-bottom: 10px;
   padding: 15px;
   border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
+  display: flex;
+  flex-direction: column; /* Stack elements inside each card */
+  justify-content: space-between;
+  align-items: center;
 }
 
 .pet-list li:hover {
   transform: scale(1.02);
 }
 
-.pet-list h3 {
-  margin: 0;
-  color: #333;
+.pet-info {
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  align-items: center; /* Center align content */
+  gap: 10px; /* Space between image and text */
+  text-align: center; /* Center-align text */
 }
 
-.pet-list p {
-  margin: 5px 0;
+.pet-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px; /* Space below the image */
 }
 
-.pet-list button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background: #ff7e5f;
+.action-buttons {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
+
+.action-buttons button {
+  background-color: #ff7e5f;
   color: white;
-  transition: background 0.3s;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.3s ease-in-out;
 }
 
-.pet-list button:hover {
-  background: #feb47b;
+.action-buttons button:hover {
+  background-color: #feb47b;
 }
 
 /* Update Form */
@@ -150,22 +199,56 @@ form,
   animation: fadeIn 0.5s ease-in;
 }
 
-.footer {
-  background: linear-gradient(45deg, #ff7e5f, #feb47b);
-  color: white;
-  text-align: center;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 20px;
-  font-size: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.footer p {
-  margin: 0;
-  font-size: 1rem;
-}
-
 .content {
   flex-grow: 1;
+  text-align: center;
+}
+
+.desc {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0px;
+}
+
+.desc h2 {
+  font-size: 2rem;
+  color: indigo;
+  margin-right: 20px;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+}
+
+.desc p {
+  font-size: 1rem;
+  color: indigo;
+  flex: 1;
+}
+
+.desc img {
+  max-width: 60%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .desc {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .desc h2,
+  .desc p {
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .desc img {
+    max-width: 80%;
+    margin-top: 20px;
+  }
 }
