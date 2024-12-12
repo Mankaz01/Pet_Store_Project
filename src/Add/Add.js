@@ -53,6 +53,7 @@ const AddPet = ({ addPet }) => {
         placeholder="Pet Name"
         value={formData.name}
         onChange={handleChange}
+        data-testId="name"
       />
       <input
         type="text"
