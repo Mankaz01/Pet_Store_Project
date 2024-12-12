@@ -1,4 +1,3 @@
-/* General Styles */
 body {
   margin: 0;
   font-family: "Arial", sans-serif;
@@ -6,22 +5,21 @@ body {
   color: #333;
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
   background: url("./assets/Images/BackgroundImg.jpg") no-repeat center center fixed;
-  background-size: cover; /* Ensures the image covers the entire screen */
-  background-attachment: fixed; /* Keeps the background fixed during scrolling */
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 .app-container {
-  flex: 1; /* Allow content to grow and fill space */
+  flex: 1;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
   padding: 20px;
-  overflow: auto; /* To handle overflow content */
+  overflow: auto;
 }
 
-/* Header Styles */
 .header {
   text-align: center;
   padding: 20px;
@@ -36,7 +34,6 @@ body {
   font-size: 2.5rem;
 }
 
-/* Add New Pet Button */
 .add-button {
   display: inline-block;
   padding: 12px 20px;
@@ -63,7 +60,6 @@ body {
   box-shadow: 0 0 6px rgba(255, 126, 95, 0.5);
 }
 
-/* Form Styles */
 form {
   background-color: white;
   padding: 20px;
@@ -109,11 +105,10 @@ form button:hover {
   background: #ff7e5f;
 }
 
-/* Pet List Styles */
 .pet-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid layout */
-  gap: 20px; /* Space between items */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
   list-style: none;
   padding: 0;
   margin: 20px 0;
@@ -126,7 +121,7 @@ form button:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
   display: flex;
-  flex-direction: column; /* Stack elements inside each card */
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
@@ -137,10 +132,10 @@ form button:hover {
 
 .pet-info {
   display: flex;
-  flex-direction: column; /* Stack content vertically */
-  align-items: center; /* Center align content */
-  gap: 10px; /* Space between image and text */
-  text-align: center; /* Center-align text */
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
 }
 
 .pet-image {
@@ -148,12 +143,12 @@ form button:hover {
   height: 100px;
   object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 10px; /* Space below the image */
+  margin-bottom: 10px;
 }
 
 .action-buttons {
   display: flex;
-  gap: 10px; /* Space between buttons */
+  gap: 10px;
 }
 
 .action-buttons button {
@@ -174,7 +169,6 @@ form button:hover {
   background-color: #feb47b;
 }
 
-/* Update Form */
 .update-form {
   background-color: #fff9e6;
   padding: 20px;
@@ -182,7 +176,6 @@ form button:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Fade-in effect for components */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -234,7 +227,6 @@ form,
   border-radius: 8px;
 }
 
-/* Media Queries for Responsive Design */
 @media (max-width: 768px) {
   .desc {
     flex-direction: column;

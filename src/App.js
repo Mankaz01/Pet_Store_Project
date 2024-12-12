@@ -3,7 +3,6 @@ import PetList from "./View/View";
 import AddPet from "./Add/Add";
 import UpdatePet from "./Update/Update";
 import petsupplies from "./assets/Images/petsupplies.jpg"
-import BackgroundImg from "./assets/Images/BackgroundImg.jpg"
 import "./App.css";
 
 const App = () => {
@@ -11,7 +10,6 @@ const App = () => {
   const [selectedPet, setSelectedPet] = useState(null);
   const [showAddPet, setShowAddPet] = useState(false);
 
-  // Fetch all pets from the backend
   useEffect(() => {
     const fetchPets = async () => {
       try {
@@ -29,19 +27,16 @@ const App = () => {
     fetchPets();
   }, []);
 
-  // Add a new pet
   const addPet = (newPet) => {
     setPets([...pets, newPet]);
-    setShowAddPet(false); // Hide AddPet after adding
+    setShowAddPet(false);
   };
 
-  // Update an existing pet
   const updatePet = (updatedPet) => {
     setPets(pets.map((pet) => (pet._id === updatedPet._id ? updatedPet : pet)));
     setSelectedPet(null);
   };
 
-  // Delete a pet
   const deletePet = async (id) => {
     console.log(id,"id")
     try {
@@ -69,7 +64,7 @@ const App = () => {
           <>
           <div className="desc">
           <div>
-            <h2>🐾 PETOPIA 🐾</h2>
+            <h2 data-testId = "title">🐾 PETOPIA 🐾</h2>
             <p>
               Welcome to Petopia, your one-stop destination for adopting, caring
               for, and celebrating pets. Our platform connects pet lovers with

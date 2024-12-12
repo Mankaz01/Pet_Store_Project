@@ -1,3 +1,5 @@
+// Got this from React testing library with Jest
+
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
 
@@ -31,8 +33,7 @@ beforeEach(() => {
   fetch.mockClear();
 });
 
-test('renders the header and initial components', () => {
-  // Mock fetch to resolve with mockPets
+test('renders and fetches pets', async () => {
   fetch.mockResolvedValueOnce({
     ok: true,
     json: async () => mockPets,
@@ -40,28 +41,15 @@ test('renders the header and initial components', () => {
 
   render(<App />);
 
-  // Check if the header text is correct
-  // const headerElement = screen.getByText(/🐾 PETOPIA 🐾/i);
-  // expect(headerElement).toBeInTheDocument();
-  screen.debug();
-});
+  // Check header
+  expect(screen.getByTestId("title")).toBeInTheDocument();
 
-test('fetches pets and renders them', async () => {
-  // Mock fetch to resolve with mockPets
-  fetch.mockResolvedValueOnce({
-    ok: true,
-    json: async () => mockPets,
-  });
-
-  render(<App />);
-
-  // Wait for the pets to be rendered
+  // Wait for pets to render
   await waitFor(() => expect(screen.getByText(/Buddy/i)).toBeInTheDocument());
   await waitFor(() => expect(screen.getByText(/Mittens/i)).toBeInTheDocument());
 });
 
-test('opens AddPet component when Add New Pet button is clicked', async () => {
-  // Mock fetch to resolve with mockPets
+test('adds a new pet', async () => {
   fetch.mockResolvedValueOnce({
     ok: true,
     json: async () => mockPets,
@@ -69,20 +57,85 @@ test('opens AddPet component when Add New Pet button is clicked', async () => {
 
   render(<App />);
 
-  // Wait for the pets to be rendered
+  // Wait for initial pets to render
   await waitFor(() => expect(screen.getByText(/Buddy/i)).toBeInTheDocument());
 
-  // Click the "Add New Pet" button
+  // Click "Add New Pet" button
   const addButton = screen.getByText('+ Add New Pet');
   fireEvent.click(addButton);
 
-  // Verify if the AddPet component is visible (you may need to adjust this according to your implementation)
-  const addPetText = screen.getByText(/Add a New Pet/i);
-  expect(addPetText).toBeInTheDocument();
+  // Fill the AddPet form
+  const nameInput = screen.getByPlaceholderText(/Pet Name/i);
+  fireEvent.change(nameInput, { target: { value: 'Charlie' } });
+
+  const speciesInput = screen.getByPlaceholderText(/Species/i);
+  fireEvent.change(speciesInput, { target: { value: 'Dog' } });
+
+  const submitButton = screen.getByText(/Add Pet/i);
+  fireEvent.click(submitButton);
+
+  // Mock POST request
+  fetch.mockResolvedValueOnce({
+    ok: true,
+    json: async () => ({
+      _id: '3',
+      name: 'Charlie',
+      species: 'Dog',
+      breed: 'Beagle',
+      age: 2,
+      price: 400,
+      description: 'Friendly and active',
+    }),
+  });
+
+  screen.debug()
+
+  // // Check if the new pet is rendered
+  await waitFor(() => expect(screen.getByTestId("name")).toBeInTheDocument());
+  // screen.debug()
+
+});
+
+test('updates an existing pet', async () => {
+  fetch
+    .mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockPets,
+    })
+    .mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        _id: '1',
+        name: 'Buddy',
+        species: 'Dog',
+        breed: 'Golden Retriever',
+        age: 4,
+        price: 500,
+        description: 'Friendly and playful',
+      }),
+    });
+
+  render(<App />);
+
+  // Wait for pets to render
+  await waitFor(() => expect(screen.getByText(/Buddy/i)).toBeInTheDocument());
+
+  // Click "Update" button for Buddy
+  const updateButton = screen.getAllByText(/Update/i)[0];
+  fireEvent.click(updateButton);
+
+  // Update the form
+  const ageInput = screen.getByDisplayValue('3');
+  fireEvent.change(ageInput, { target: { value: '4' } });
+
+  const saveButton = screen.getByText(/Save Changes/i);
+  fireEvent.click(saveButton);
+
+  // Check if Buddy's age is updated
+  await waitFor(() => expect(screen.getByText(/4/i)).toBeInTheDocument());
 });
 
 test('deletes a pet', async () => {
-  // Mock fetch to resolve with mockPets
   fetch
     .mockResolvedValueOnce({
       ok: true,
@@ -94,13 +147,13 @@ test('deletes a pet', async () => {
 
   render(<App />);
 
-  // Wait for the pets to be rendered
+  // Wait for pets to render
   await waitFor(() => expect(screen.getByText(/Buddy/i)).toBeInTheDocument());
 
-  // Click the delete button for Buddy (ensure the button is accessible)
-  const deleteButton = screen.getAllByRole('button')[1]; // Assuming the delete button is the second button
+  // Click delete button for Buddy
+  const deleteButton = screen.getAllByText(/Delete/i)[0];
   fireEvent.click(deleteButton);
 
-  // Wait for the fetch request to be processed and verify that Buddy is removed
+  // Check if Buddy is removed
   await waitFor(() => expect(screen.queryByText(/Buddy/i)).not.toBeInTheDocument());
 });
